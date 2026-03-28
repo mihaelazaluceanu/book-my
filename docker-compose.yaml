@@ -1,41 +1,53 @@
 version: "3.8"
 
 services:
-  bakustore-db:
+  book-my-db:
     image: postgres:13.2-alpine
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: book-my-db
       POSTGRES_PASSWORD: postgres
     volumes:
-      - bakustore-db-vol:/var/lib/postgresql/data
+      - book-my-db-vol:/var/lib/postgresql/data
     networks:
-      - bakustore-network
+      - book-my-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d book-my-db"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  bakustore-back:
+  book-my-back:
     build: ./backend
-    container_name: bakustore-backend
+    container_name: book-my-backend
     environment:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://bakustore-db:5432/postgres
+          SPRING_DATASOURCE_URL: jdbc:postgresql://book-my-db:5432/book-my-db
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
           SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
           - "8080:8090"
     depends_on:
-          bakustore-db:
+          book-my-db:
             condition: service_healthy
     networks:
-      - bakustore-network
+      - book-my-network
+
+  book-my-front:
+    build: ./frontend
+    container_name: book-my-frontend
+    ports:
+      - "8000:80"
+    depends_on:
+      - book-my-back
+    networks:
+      - book-my-network
     
 networks:
-  bakustore-network:
+  book-my-network:
     driver: bridge
 
 volumes:
-  bakustore-db-vol:
+  book-my-db-vol:

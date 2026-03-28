@@ -78,7 +78,7 @@ export const useLoginFormController = (): LoginFormController => {
     const dispatch = useAppDispatch();
     const submit = useCallback((data: LoginFormModel) => // Create a submit callback to send the form data to the backend.
         login(data).then((result) => {
-            dispatch(setToken(result.response?.token ?? ''));
+            dispatch(setToken(result.access_token ?? ''));
             toast(formatMessage({ id: "notifications.messages.authenticationSuccess" }));
             redirectToHome();
         }), [login, queryClient, redirectToHome, dispatch]);

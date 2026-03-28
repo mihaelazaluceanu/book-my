@@ -1,5 +1,5 @@
-import {LoginRecord} from "../client/models";
-import {AuthorizationApi} from "../client/apis";
+import {LoginDto} from "../client/models";
+import {AuthControllerApi, Configuration} from "../client";
 import {useMutation} from "@tanstack/react-query";
 
 /**
@@ -13,6 +13,6 @@ const loginMutationKey = "loginMutation";
 export const useLogin = () => {
     return useMutation({ // Return the mutation object.
         mutationKey: [loginMutationKey], // Add the key to identify the mutation.
-        mutationFn: (loginRecord: LoginRecord) => new AuthorizationApi().apiAuthorizationLoginPost({loginRecord}) // Add the mutation callback by using the generated client code and adapt it.
+        mutationFn: (loginDto: LoginDto) => new AuthControllerApi(new Configuration({credentials: "include"})).login({loginDto}) // Add the mutation callback by using the generated client code and adapt it.
     })
 }

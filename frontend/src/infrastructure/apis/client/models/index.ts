@@ -1,11 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './Book';
+export * from './BookDto';
 export * from './ErrorCodes';
 export * from './ErrorMessage';
 export * from './HttpStatusCode';
+export * from './LoginDto';
 export * from './LoginRecord';
 export * from './LoginResponseRecord';
 export * from './LoginResponseRecordRequestResponse';
+export * from './RegisterDto';
 export * from './RequestResponse';
 export * from './UserAddRecord';
 export * from './UserFileRecord';
